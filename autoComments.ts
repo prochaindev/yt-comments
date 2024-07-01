@@ -48,13 +48,18 @@ function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function getRandomInteger(min:number , max:number ) {
+  // Ensure the result is inclusive of both min and max
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 const main = async (): Promise<void> => {
   
   const data = await readFile();
   const lines=data.split('\n')
 
   const runTimes = Number(process.env.SCRIPT_RUN_TIMES);
-  const timeDelayInMinutes = Number(process.env.TIME_DELAY_IN_EACH_RUN);
+  const timeDelayInMinutes = getRandomInteger(Number(process.env.TIME_DELAY_IN_EACH_RUN_FROM), Number(process.env.TIME_DELAY_IN_EACH_RUN_TO));
   const timeDelayInMilliseconds = timeDelayInMinutes * 60 * 1000;
   const commentsPerRun = Number(process.env.COMMENTS_PER_RUN)
 
@@ -66,7 +71,7 @@ const main = async (): Promise<void> => {
     const comments = slicedLines.join('\n')
     console.log(comments)
 
-    await addOrder(4794, String(process.env.VIDEO_LINK), comments);
+    await addOrder(3678, String(process.env.VIDEO_LINK), comments);
     console.log(`Run: ${i + 1}, Waiting for ${timeDelayInMinutes} minutes`);
     await delay(timeDelayInMilliseconds);
 
